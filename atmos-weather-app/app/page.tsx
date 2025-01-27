@@ -1,7 +1,7 @@
 // import Image from "next/image";
 import NavBar from "./ui/nav-bar";
-import SearchBar from "./ui/search-bar";
 import CardsWrapper from "./ui/cards";
+import LocationFormWrapper from "./ui/location-form-wrapper";
 
 export default function Home() {
   return (
@@ -10,7 +10,7 @@ export default function Home() {
         <NavBar />
       </header>
       <div className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <SearchBar />
+        <LocationFormWrapper />
         <CardsWrapper />
       </div>
     </main>
