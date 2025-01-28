@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { WeatherCondition } from "@/app/lib/definitions";
 
 export function Logo() {
 
@@ -23,6 +24,20 @@ export function SettingsIcon() {
             width={40}
             height={40}
             alt="Settings icon"
+        />
+    )
+}
+
+export function WeatherIcon({condition}: WeatherCondition) {
+
+    const { code, label } = condition;
+
+    return (
+        <Image
+            src={`/${code}.svg`}
+            width={40}
+            height={40}
+            alt={`Weather condition icon: ${label}`}
         />
     )
 }
