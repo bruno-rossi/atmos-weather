@@ -1,21 +1,15 @@
+'use client';
+
 import LocationCard from "./location-cards";
 import { Location } from "../lib/definitions";
-import { fetchLocations } from "../lib/data";
 
-export default async function CardsWrapper() {
-
-    const locations = await fetchLocations();
-    // console.log("Fetched Locations:", locations);
+export default function CardsWrapper({ locations }: { locations: Location[] }) {
 
     return (
         <div className="flex flex-col gap-4 bg-freshAir w-[80%] h-[100%] py-8 px-8 rounded-xl mx-auto">
-            {locations.length > 0 ? (
-            locations.map((location: Location) => (
+            {locations.map((location) => (
                 <LocationCard key={location.location_id} location={location} />
-            ))
-        ) : (
-            <p>No locations found.</p>
-        )}
+            ))}
         </div>
     )
 }

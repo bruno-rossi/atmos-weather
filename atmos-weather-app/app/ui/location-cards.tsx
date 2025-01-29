@@ -1,25 +1,57 @@
+'use client'
+
 import { LocationCardProps } from "../lib/definitions";
-import WeatherCondition from "./weather-condition";
-import ForecastTable from "./forecast-table";
 import { fetchWeather } from "../lib/data";
+import React, {useState, useEffect, Suspense } from "react";
+import { WeatherData } from "../lib/definitions";
 
-export default async function LocationCard({ location }: LocationCardProps) {
+const WeatherCondition = React.lazy(() => import("./weather-condition"));
+const ForecastTable = React.lazy(() => import("./forecast-table"));
 
-    const weatherData = await fetchWeather(location);
-    console.log("Fetched Weather:", weatherData);
-    const currentDateTime = new Date(weatherData.current.time);
+export default function LocationCard({ location }: LocationCardProps) {
+
+    const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [currentDateTime, setCurrentDateTime] = useState<Date | null>(null);
+
+    useEffect(() => {
+        const getWeather = async () => {
+            try {
+                const data = await fetchWeather(location);
+                setWeatherData(data);
+
+                const time = new Date(data.current.time);
+                setCurrentDateTime(currentDateTime);
+            } catch (err) {
+                setError("Error fetching weather data.");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        getWeather(); // Fetch the weather for this location
+    }, [location]);
+
+    if (isLoading) return <p>Loading weather...</p>;
+    if (error) return <p>{error}</p>;
+    if (!weatherData || !weatherData.current) return <p>No weather data available.</p>;
     
     return (
         <div className="flex flex-col bg-white w-full mx-auto py-4 px-4 border rounded-xl">
             <div className="grid grid-cols-6 gap-0 border w-full items-center">
                 <div className="col-span-1 border text-center">
+                <Suspense fallback={<p>Loading weather condition...</p>}>
                     <WeatherCondition weatherData={weatherData.current} />
+                </Suspense>
                 </div>
                 <h2 className="col-span-2 text-4xl text-center truncate border">{location.latitude}, {location.longitude}</h2>
-                <h3 className="col-span-2 text-3xl text-center border">{currentDateTime.getUTCHours()}:{currentDateTime.getUTCMinutes()}</h3>
+                <h3 className="col-span-2 text-3xl text-center border">{currentDateTime? currentDateTime.getUTCHours() : "00"}:{currentDateTime? currentDateTime.getUTCMinutes() : "00"}</h3>
                 <h3 className="col-span-1 text-3xl text-center border">{weatherData.current.temperature_2m} {weatherData.current_units.temperature_2m}</h3>
             </div>
-            <ForecastTable />
+            <Suspense fallback={<p>Loading forecast...</p>}>
+                <ForecastTable />
+            </Suspense>
         </div>
     )
 }
