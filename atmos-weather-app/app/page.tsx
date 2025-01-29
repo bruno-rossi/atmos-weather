@@ -1,18 +1,15 @@
-// import Image from "next/image";
-import NavBar from "./ui/nav-bar";
-import CardsWrapper from "./ui/cards-wrapper";
-import LocationFormWrapper from "./ui/location-form-wrapper";
 
-export default function Home() {
+import { fetchLocations } from "./lib/data";
+import { Location } from "./lib/definitions";
+import Client from "./ui/client";
+
+export default async function Home() {
+  
+  const initialLocations: Location[] = await fetchLocations();
+
   return (
-    <main className="font-[family-name:var(--font-geist-sans)] flex min-h-screen flex-col">
-      <header>
-        <NavBar />
-      </header>
       <div className="flex flex-col row-start-2 items-center sm:items-start">
-        <LocationFormWrapper />
-        <CardsWrapper />
+        <Client initialLocations={initialLocations} />
       </div>
-    </main>
   );
 }

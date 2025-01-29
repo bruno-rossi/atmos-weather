@@ -34,10 +34,10 @@ export function WeatherIcon({condition}: WeatherCondition) {
 
     return (
         <Image
-            src={`/${code}.svg`}
+            src={`/${condition.code}.svg`}
             width={40}
             height={40}
-            alt={`Weather condition icon: ${label}`}
+            alt={`Weather condition icon: ${condition.label}`}
         />
     )
 }

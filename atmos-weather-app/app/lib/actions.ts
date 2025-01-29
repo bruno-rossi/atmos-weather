@@ -2,6 +2,8 @@
 
 import { z } from 'zod';
 import { sql } from '@vercel/postgres';
+import { Location } from './definitions';
+import { FormState } from './definitions';
 
 const FormSchema = z.object({
     userId: z.string().uuid(),
@@ -19,18 +21,9 @@ const FormSchema = z.object({
         .lte(180, { message: "Please enter a longitude lower than 180."}),
 })
 
-export type State = {
-    errors?: {
-      latitude?: string[];
-      longitude?: string[];
-      [key: string]: string[] | undefined;
-    };
-    message?: string | null;
-};
-
 const CreateLocation = FormSchema.omit({ locationId: true });
 
-export async function createLocation(prevState: State, formData: FormData): Promise<State> {
+export async function createLocation(prevState: FormState, formData: FormData): Promise<FormState> {
     // Validate form using zod
     const validatedFields = CreateLocation.safeParse({
         userId: formData.get('userId'),
@@ -51,19 +44,31 @@ export async function createLocation(prevState: State, formData: FormData): Prom
 
     // Insert data into the database
     try {
-        await sql`
+        const response = await sql`
           INSERT INTO locations (user_id, latitude, longitude)
           VALUES (${userId}, ${latitude}, ${longitude})
+          RETURNING *;
         `;
+
+        const newLocation = response.rows[0];
+        const location: Location = {
+          location_id: newLocation.location_id,
+          user_id: newLocation.user_id,
+          latitude: newLocation.latitude,
+          longitude: newLocation.longitude,
+        };
+
         return {
+            newLocation: location,
             message: "Location successfully created.",
         };
-      } catch (error) {
+    } catch (error) {
         // If a database error occurs, return a more specific error.
         console.error("Database error:", error);
         return {
           message: 'Database error: Failed to create location.',
         };
-      }
+    }
+
     
 }

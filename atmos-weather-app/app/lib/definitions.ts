@@ -14,7 +14,7 @@ export type WeatherConditionProps = {
         time: string,
         interval: number,
         temperature_2m: number,
-        is_day: 1 | 0,
+        is_day: number,
         precipitation: number,
         rain: number,
         showers: number,
@@ -29,3 +29,50 @@ export type WeatherCondition = {
         label: string,
     }
 }
+
+export type CreateLocationResponse = {
+    newLocation: Location;
+    message: string;
+  }
+
+export type WeatherData = {
+    latitude: number;
+    longitude: number;
+    generationtime_ms: number;
+    utc_offset_seconds: number;
+    timezone: string;
+    timezone_abbreviation: string;
+    elevation: number;
+    current_units: {
+        time: string;
+        interval: string;
+        temperature_2m: string;
+        is_day: number,
+        precipitation: string;
+        rain: string;
+        showers: string;
+        snowfall: string;
+        cloud_cover: string;
+    },
+    current: {
+        time: string;
+        interval: number;
+        temperature_2m: number;
+        is_day: number,
+        precipitation: number;
+        rain: number;
+        showers: number;
+        snowfall: number;
+        cloud_cover: number;
+    }
+}
+
+export type FormState = {
+    errors?: {
+      latitude?: string[];
+      longitude?: string[];
+      [key: string]: string[] | undefined;
+    };
+    newLocation?: Location;
+    message?: string | null;
+};

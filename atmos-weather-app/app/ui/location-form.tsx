@@ -1,13 +1,27 @@
 'use client';
 
-import { State } from "../lib/actions";
+import { FormState } from "../lib/definitions";
 import { useActionState } from "react";
 import { createLocation } from "../lib/actions";
+import { Location } from "../lib/definitions";
 
-export default function LocationForm() {
+export default function LocationForm({ setLocations }: { setLocations: React.Dispatch<React.SetStateAction<Location[]>> }) {
 
-    const initialState: State = { message: null, errors: {} };
-    const [state = initialState, formAction] = useActionState(createLocation, initialState);
+    const initialState: FormState = { message: null, errors: {} };
+
+    const actionHandler = async (prevState: FormState, formData: FormData) => {
+    
+        const newState = await createLocation(prevState, formData);
+
+        if (newState.newLocation) {
+            setLocations((prevLocations: Location[]) => [...prevLocations, newState.newLocation!]);
+        }
+
+        return newState;
+    };
+
+
+    const [state = initialState, formAction] = useActionState(actionHandler, initialState);
 
     const hardcodedUserId = "123e4567-e89b-12d3-a456-426614174000";
 
