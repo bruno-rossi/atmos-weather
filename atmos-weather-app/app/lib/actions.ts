@@ -69,6 +69,30 @@ export async function createLocation(prevState: FormState, formData: FormData): 
           message: 'Database error: Failed to create location.',
         };
     }
-
     
+}
+
+export type ResponseMessage = {
+  status: number,
+  message: string,
+}
+
+export async function deleteLocation(locationId: string): Promise<ResponseMessage> {
+
+  try {
+
+    const response = await sql`DELETE FROM locations WHERE location_id = ${locationId}`;
+
+    return { 
+      status: 204,
+      message: "Location has been successfully deleted from the database."
+    };
+
+  } catch (error) {
+    console.log("Database error", error);
+    return {
+      status: 400,
+      message: "Database error: Failed to delete location."
+    }
+  }
 }

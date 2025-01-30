@@ -7,6 +7,7 @@ export type Location = {
 
 export type LocationCardProps = {
     location: Location,
+    handleDelete: Function
 }
 
 export type WeatherConditionProps = {

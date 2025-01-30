@@ -12,6 +12,7 @@ export async function GET() {
             status: 200,
             headers: {
                 'Content-Type': 'application/json',
+                'Cache-Control': 'no-store',
             },
         });
     } catch (error) {
@@ -24,20 +25,3 @@ export async function GET() {
         });
     }
 }
-
-// export async function POST(newLocation: Location) {
-//     console.log("POST handler invoked");
-
-//     try {
-        
-
-//     } catch (error) {
-//         console.error(`Error creating a new location: ${error}`);
-//         return new Response(JSON.stringify({ error: 'Failed to create location.'}), {
-//             status: 500,
-//             headers: {
-//                 'Content-Type':'application/json',
-//             },
-//         })
-//     };
-// }
