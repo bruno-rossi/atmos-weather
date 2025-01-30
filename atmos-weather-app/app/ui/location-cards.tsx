@@ -4,6 +4,7 @@ import { LocationCardProps } from "../lib/definitions";
 import { fetchWeather } from "../lib/data";
 import React, {useState, useEffect, Suspense } from "react";
 import { WeatherData } from "../lib/definitions";
+import { getForecastNextSixHours } from "../lib/data";
 
 const WeatherCondition = React.lazy(() => import("./weather-condition"));
 const ForecastTable = React.lazy(() => import("./forecast-table"));
@@ -48,12 +49,21 @@ export default function LocationCard({ location, handleDelete }: LocationCardPro
                     <WeatherCondition weatherData={weatherData.current} />
                 </Suspense>
                 </div>
-                <h2 className="col-span-2 text-4xl text-center truncate border">{location.latitude}, {location.longitude}</h2>
-                <h3 className="col-span-2 text-3xl text-center border">{currentDateTime? currentDateTime.getUTCHours() : "00"}:{currentDateTime? currentDateTime.getUTCMinutes() : "00"}</h3>
-                <h3 className="col-span-1 text-3xl text-center border">{weatherData.current.temperature_2m} {weatherData.current_units.temperature_2m}</h3>
+                <h2 className="col-span-2 text-4xl text-center truncate border">
+                    {location.latitude}, {location.longitude}
+                </h2>
+                <h3 className="col-span-2 text-3xl text-center border">
+                    {currentDateTime? currentDateTime.getUTCHours() : "00"}:{currentDateTime? currentDateTime.getUTCMinutes() : "00"}
+                </h3>
+                <h3 className="col-span-1 text-3xl text-center border">
+                    {weatherData.current.temperature_2m} {weatherData.current_units.temperature_2m}
+                </h3>
             </div>
             <Suspense fallback={<p>Loading forecast...</p>}>
-                <ForecastTable />
+                <ForecastTable 
+                    currentTime={weatherData.current.time} 
+                    weatherDataHourly={weatherData.hourly}
+                />
             </Suspense>
         </div>
     )
