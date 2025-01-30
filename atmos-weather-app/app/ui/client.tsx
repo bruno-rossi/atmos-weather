@@ -12,7 +12,7 @@ export default function Client({initialLocations}: { initialLocations: Location[
     return (
         <div className="flex flex-col row-start-2 items-center sm:items-start">
             <LocationFormWrapper setLocations={setLocations} />
-            <CardsWrapper locations={locations} />
+            <CardsWrapper locations={locations} setLocations={setLocations} />
         </div>
     )
 }

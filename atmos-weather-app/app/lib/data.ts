@@ -1,18 +1,30 @@
-import { sql } from "@vercel/postgres";
+import { db } from "@vercel/postgres";
 import { Location } from "./definitions";
 import { WeatherConditionProps } from "./definitions";
 
 export async function fetchLocations(): Promise<Location[]> {
+
+    const client = await db.connect();
     
     console.log("Fetching locations from the database...");
     try {
-        const data = await sql<Location>`SELECT * from locations`;
-        console.log("Database Result:", data.rows);
-        return data.rows;
+        const data = await client.sql`SELECT * from locations`;
+
+        const locations: Location[] = data.rows.map((row: any) => ({
+            location_id: row.location_id,
+            user_id: row.user_id,
+            latitude: row.latitude,
+            longitude: row.longitude,
+        }));
+
+        console.log("Database Result:", locations);
+        return locations;
         
     } catch (error) {
         console.error('Database Error:', error);
         return [];
+    } finally {
+        client.release();
     }
 }
 

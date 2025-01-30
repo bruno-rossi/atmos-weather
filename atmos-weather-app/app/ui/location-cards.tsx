@@ -8,7 +8,7 @@ import { WeatherData } from "../lib/definitions";
 const WeatherCondition = React.lazy(() => import("./weather-condition"));
 const ForecastTable = React.lazy(() => import("./forecast-table"));
 
-export default function LocationCard({ location }: LocationCardProps) {
+export default function LocationCard({ location, handleDelete }: LocationCardProps) {
 
     const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -38,7 +38,10 @@ export default function LocationCard({ location }: LocationCardProps) {
     if (!weatherData || !weatherData.current) return <p>No weather data available.</p>;
     
     return (
-        <div className="flex flex-col bg-white w-full mx-auto py-4 px-4 border rounded-xl">
+        <div className="group flex flex-col bg-white w-full mx-auto py-4 px-4 border rounded-xl">
+            <div onClick={() => handleDelete(location.location_id)}
+                className="flex flex-row justify-end block py-2 invisible group-hover:visible"
+                ><span className="bg-capri text-white font-bold px-4 py-2 rounded-xl">Delete</span></div>
             <div className="grid grid-cols-6 gap-0 border w-full items-center">
                 <div className="col-span-1 border text-center">
                 <Suspense fallback={<p>Loading weather condition...</p>}>
