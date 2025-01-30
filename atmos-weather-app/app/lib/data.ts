@@ -1,6 +1,6 @@
 import { db } from "@vercel/postgres";
 import { Location } from "./definitions";
-import { WeatherConditionProps } from "./definitions";
+import { WeatherConditionProps, WeatherDataHourly, WeatherDataCurrent  } from "./definitions";
 
 export async function fetchLocations(): Promise<Location[]> {
 
@@ -31,7 +31,7 @@ export async function fetchLocations(): Promise<Location[]> {
 export async function fetchWeather(location: Location) {
 
     try {
-        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,is_day,precipitation,rain,showers,snowfall,cloud_cover&timezone=auto&forecast_days=2`)
+        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,is_day,precipitation,rain,snowfall,cloud_cover&hourly=temperature_2m,rain,snowfall,cloud_cover,is_day&timezone=auto&forecast_days=2`)
 
         if (!response.ok) {
             throw new Error(`Error: ${response.status} - ${response.statusText}`);
@@ -89,6 +89,25 @@ export function getWeatherCondition(data: WeatherConditionProps) {
         weatherCondition.code = 'condition-undefined';
         weatherCondition.label = 'Undefined'
     }
-
     return weatherCondition;
+}
+
+export function getForecastNextSixHours(currentTime: string, weatherDataHourly: WeatherDataHourly): WeatherDataCurrent[] {
+
+    const firstHourIndex = weatherDataHourly.time.findIndex((time: string) => time === currentTime) + 1;
+    const hourlyForecast: WeatherDataCurrent[] = [];
+
+    for (let i = firstHourIndex + 1; i <= firstHourIndex+6; i++) {
+
+        let hourly: WeatherDataCurrent = {
+            time: weatherDataHourly.time[i],
+            temperature_2m: weatherDataHourly.temperature_2m[i],
+            is_day: weatherDataHourly.is_day[i],
+            rain: weatherDataHourly.rain[i],
+            snowfall: weatherDataHourly.snowfall[i],
+            cloud_cover: weatherDataHourly.cloud_cover[i],
+        }
+        hourlyForecast.push(hourly);
+    }
+    return hourlyForecast;
 }
