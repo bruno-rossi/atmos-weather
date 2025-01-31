@@ -1,17 +1,19 @@
-'use client'
+'use client';
+
 import WeatherCondition from "./weather-condition";
 import { useState, useEffect } from "react";
 import { WeatherDataCurrent, WeatherDataHourly } from "../lib/definitions";
 import { getForecastNextSixHours } from "../lib/data";
+import { formatIntlTime } from "../lib/data";
 
 interface ForecastTableProps {
-    currentHour: number | null,
+    currentTime: string,
     weatherDataHourly: WeatherDataHourly,
 }
 
-export default function ForecastTable({currentHour, weatherDataHourly}: ForecastTableProps) {
+export default function ForecastTable({currentTime, weatherDataHourly}: ForecastTableProps) {
 
-    console.log("Forecast table received current hour:", currentHour)
+    const currentHour = (new Date(currentTime)).getHours()
     const [hourlyForecast, setHourlyForecast] = useState<WeatherDataCurrent[]>([]);
 
     useEffect(() => {
@@ -40,7 +42,7 @@ export default function ForecastTable({currentHour, weatherDataHourly}: Forecast
             <thead>
                 <tr className="grid grid-cols-6 text-center">
                 {
-                    hourlyForecast.map(weather => <td className="border" key={weather.time}>{weather.time}</td>)
+                    hourlyForecast.map(weather => <td className="border" key={weather.time}>{formatIntlTime(weather.time)}</td>)
                 }
                 </tr>
             </thead>

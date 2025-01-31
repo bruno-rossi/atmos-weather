@@ -119,22 +119,14 @@ export function getForecastNextSixHours(currentHour: number, weatherDataHourly: 
     return hourlyForecast;
 }
 
-export async function fetchCurrentTime(timezone: string[]) {
+export function formatIntlTime(localTime: string): string {
 
-    try {
-
-        const response = await fetch(`http://worldtimeapi.org/api/timezone/${timezone[0]}/${timezone[1]}`)
-
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status} - ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        console.log("Fetch time result:", data)
-        return data.datetime;
-
-    } catch(error) {
-        console.log(error)
-        return null
+    const options: Intl.DateTimeFormatOptions = {
+        hour: "numeric",
+        minute: "numeric",
     }
+
+    let formattedLocalTime = new Intl.DateTimeFormat('en-US', options).format(new Date(localTime));
+
+    return formattedLocalTime;
 }
