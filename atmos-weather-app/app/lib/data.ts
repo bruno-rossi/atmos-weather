@@ -92,12 +92,18 @@ export function getWeatherCondition(data: WeatherConditionProps) {
     return weatherCondition;
 }
 
-export function getForecastNextSixHours(currentTime: string, weatherDataHourly: WeatherDataHourly): WeatherDataCurrent[] {
+export function getForecastNextSixHours(currentHour: number, weatherDataHourly: WeatherDataHourly): WeatherDataCurrent[] {
 
-    const firstHourIndex = weatherDataHourly.time.findIndex((time: string) => time === currentTime) + 1;
+    console.log("forecast function received current hour:", currentHour);
+
+    const firstHourIndex = weatherDataHourly.time.findIndex((time: string) => {
+        return new Date(time).getHours() === currentHour;
+    });
     const hourlyForecast: WeatherDataCurrent[] = [];
 
-    for (let i = firstHourIndex + 1; i <= firstHourIndex+6; i++) {
+    for (let i = firstHourIndex + 1; i <= firstHourIndex+6; i++) { // Get next 6 hours
+
+        if (i >= weatherDataHourly.time.length) break; // Prevent out-of-bounds error
 
         let hourly: WeatherDataCurrent = {
             time: weatherDataHourly.time[i],
@@ -109,5 +115,26 @@ export function getForecastNextSixHours(currentTime: string, weatherDataHourly: 
         }
         hourlyForecast.push(hourly);
     }
+    console.log("Hourly forecast:", hourlyForecast)
     return hourlyForecast;
+}
+
+export async function fetchCurrentTime(timezone: string[]) {
+
+    try {
+
+        const response = await fetch(`http://worldtimeapi.org/api/timezone/${timezone[0]}/${timezone[1]}`)
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log("Fetch time result:", data)
+        return data.datetime;
+
+    } catch(error) {
+        console.log(error)
+        return null
+    }
 }

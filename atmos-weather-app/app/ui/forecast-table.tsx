@@ -1,17 +1,27 @@
 'use client'
 import WeatherCondition from "./weather-condition";
-import { useState } from "react";
-import { WeatherDataHourly } from "../lib/definitions";
+import { useState, useEffect } from "react";
+import { WeatherDataCurrent, WeatherDataHourly } from "../lib/definitions";
 import { getForecastNextSixHours } from "../lib/data";
 
 interface ForecastTableProps {
-    currentTime: string,
+    currentHour: number | null,
     weatherDataHourly: WeatherDataHourly,
 }
 
-export default function ForecastTable({currentTime, weatherDataHourly}: ForecastTableProps) {
+export default function ForecastTable({currentHour, weatherDataHourly}: ForecastTableProps) {
 
-    const [ hourlyForecast, setHourlyForecast ] = useState(getForecastNextSixHours(currentTime, weatherDataHourly));
+    console.log("Forecast table received current hour:", currentHour)
+    const [hourlyForecast, setHourlyForecast] = useState<WeatherDataCurrent[]>([]);
+
+    useEffect(() => {
+        if (currentHour !== null) {
+            setHourlyForecast(getForecastNextSixHours(currentHour, weatherDataHourly));
+        }
+    }, [currentHour, weatherDataHourly]);
+    
+    if (currentHour === null) return <p>Loading time data...</p>;
+
 
     // const tempData = { weatherData: {
     //     time: '2025-01-28T06:00',
@@ -30,14 +40,14 @@ export default function ForecastTable({currentTime, weatherDataHourly}: Forecast
             <thead>
                 <tr className="grid grid-cols-6 text-center">
                 {
-                    hourlyForecast.map(weather => <td className="border">{weather.time}</td>)
+                    hourlyForecast.map(weather => <td className="border" key={weather.time}>{weather.time}</td>)
                 }
                 </tr>
             </thead>
             <tbody>
                 <tr className="grid grid-cols-6 text-center">
                     {
-                        hourlyForecast.map(weather => <td className="border">{weather.temperature_2m}</td>)
+                        hourlyForecast.map(weather => <td className="border" key={weather.time}>{weather.temperature_2m}</td>)
                     }
                 </tr>
                 <tr className="grid grid-cols-6">
