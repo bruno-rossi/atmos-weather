@@ -1,6 +1,7 @@
 export type Location = {
     location_id: string,
     user_id: string,
+    location_name: string,
     latitude: number,
     longitude: number,
 }

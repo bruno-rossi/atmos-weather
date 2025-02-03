@@ -10,10 +10,11 @@ const users = [
 const locations = [
     {
         userId: '123e4567-e89b-12d3-a456-426614174000',
+        location_name: 'Brooklyn, NY',
         latitude: 40.68870311245676,
         longitude: -73.97062280422642,
 
-    }
+    },
 ]
 
 export { locations, users }

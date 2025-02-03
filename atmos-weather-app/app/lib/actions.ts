@@ -8,6 +8,7 @@ import { FormState } from './definitions';
 const FormSchema = z.object({
     userId: z.string().uuid(),
     locationId: z.string().uuid(),
+    locationName: z.string(),
     latitude: z.coerce
         .number({
             required_error: "Latitude is required.",
@@ -27,6 +28,7 @@ export async function createLocation(prevState: FormState, formData: FormData): 
     // Validate form using zod
     const validatedFields = CreateLocation.safeParse({
         userId: formData.get('userId'),
+        locationName: formData.get('locationName'),
         latitude: formData.get('latitude'),
         longitude: formData.get('longitude'),
     })
@@ -40,19 +42,20 @@ export async function createLocation(prevState: FormState, formData: FormData): 
     }
 
     // Prepare data for insertion into the database
-    const { userId, latitude, longitude } = validatedFields.data;
+    const { userId, locationName, latitude, longitude } = validatedFields.data;
 
     // Insert data into the database
     try {
         const response = await sql`
-          INSERT INTO locations (user_id, latitude, longitude)
-          VALUES (${userId}, ${latitude}, ${longitude})
+          INSERT INTO locations (user_id, location_name, latitude, longitude)
+          VALUES (${userId}, ${locationName}, ${latitude}, ${longitude})
           RETURNING *;
         `;
 
         const newLocation = response.rows[0];
         const location: Location = {
           location_id: newLocation.location_id,
+          location_name: newLocation.location_name,
           user_id: newLocation.user_id,
           latitude: newLocation.latitude,
           longitude: newLocation.longitude,

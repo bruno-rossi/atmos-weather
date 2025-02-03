@@ -11,9 +11,9 @@ const ForecastTable = React.lazy(() => import("./forecast-table"));
 
 export default function LocationCard({ location, handleDelete }: LocationCardProps) {
 
-    const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [ weatherData, setWeatherData ] = useState<WeatherData | null>(null);
+    const [ isLoading, setIsLoading ] = useState(true);
+    const [ error, setError ] = useState<string | null>(null);
     const [ formattedLocalTime, setFormattedLocalTime ] = useState<string>("")
 
     useEffect(() => {
@@ -56,7 +56,7 @@ export default function LocationCard({ location, handleDelete }: LocationCardPro
                 </Suspense>
                 </div>
                 <h2 className="col-span-2 text-4xl text-center truncate border">
-                    {location.latitude}, {location.longitude}
+                    { location.location_name && location.location_name !== "" ? location.location_name : `${location.latitude}, ${location.longitude}` }
                 </h2>
                 <h3 className="col-span-2 text-3xl text-center border">
                         { formattedLocalTime }

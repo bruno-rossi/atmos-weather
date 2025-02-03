@@ -8,7 +8,7 @@ export default async function Home() {
   const initialLocations: Location[] = await fetchLocations();
 
   return (
-      <div className="flex flex-col row-start-2 items-center sm:items-start">
+      <div className="flex flex-col items-center sm:items-start w-full">
         <Client initialLocations={initialLocations} />
       </div>
   );

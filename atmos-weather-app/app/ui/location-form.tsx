@@ -24,6 +24,7 @@ export default function LocationForm({ setLocations }: { setLocations: React.Dis
     const [state = initialState, formAction] = useActionState(actionHandler, initialState);
 
     const hardcodedUserId = "123e4567-e89b-12d3-a456-426614174000";
+    const hardcodedLocationName = "Brooklyn";
 
     return (
         <form id="location-form" 
@@ -37,6 +38,23 @@ export default function LocationForm({ setLocations }: { setLocations: React.Dis
 
                 {/* Hidden userId input field to hardcode userId (temporary). */}
                 <input type="hidden" name="userId" value={hardcodedUserId} />
+
+                {/* Hidden userId input field to hardcode location name (temporary). */}
+                {/* <input type="hidden" name="locationName" value={hardcodedLocationName} /> */}
+                {/* Fieldset for location_name. */}
+                <fieldset className="">
+                    <label htmlFor="location-name-input" className="sr-only">Enter location name:</label>
+                    <input 
+                        id="location-name-input"
+                        name="locationName"
+                        className="block min-w-0 py-2 px-4 text-l/8 placeholder:text-cadet placeholder:text-l/8 border-2 focus:outline-capri rounded-xl"
+                        type="text" 
+                        placeholder="Enter location name" 
+                        aria-describedby="location-name-input-error"
+                        required
+                    />
+                </fieldset>
+
 
                 {/* Fieldset for latitude. */}
                 <fieldset className="">
@@ -74,6 +92,15 @@ export default function LocationForm({ setLocations }: { setLocations: React.Dis
                             {
                             state.errors?.form &&
                                 state.errors.form.map((error: string) => (
+                                <p className="mt-2 text-sm text-red-500" key={error}>
+                                    {error}
+                                </p>
+                            ))}
+                </div>
+                <div id="location-name-input-error" aria-live="polite" aria-atomic="true">
+                            {
+                            state.errors?.location_name &&
+                                state.errors.location_name.map((error: string) => (
                                 <p className="mt-2 text-sm text-red-500" key={error}>
                                     {error}
                                 </p>

@@ -2,6 +2,7 @@ import { db } from "@vercel/postgres";
 import { Location } from "./definitions";
 import { WeatherConditionProps, WeatherDataHourly, WeatherDataCurrent  } from "./definitions";
 
+
 export async function fetchLocations(): Promise<Location[]> {
 
     const client = await db.connect();
@@ -12,6 +13,7 @@ export async function fetchLocations(): Promise<Location[]> {
 
         const locations: Location[] = data.rows.map((row: any) => ({
             location_id: row.location_id,
+            location_name: row.location_name,
             user_id: row.user_id,
             latitude: row.latitude,
             longitude: row.longitude,
