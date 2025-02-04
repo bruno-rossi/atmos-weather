@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import CardsWrapper from "./cards-wrapper";
 import LocationFormWrapper from "./location-form-wrapper";
 import { Location } from "../lib/definitions";
 import { fetchLocations } from "../lib/data";
+import { CardsWrapperSkeleton } from "./skeletons";
 
 export default function Client({initialLocations}: { initialLocations: Location[]}) {
 
@@ -22,7 +23,9 @@ export default function Client({initialLocations}: { initialLocations: Location[
     return (
         <div className="flex flex-col items-center sm:items-start w-full">
             <LocationFormWrapper setLocations={setLocations} />
-            <CardsWrapper locations={locations} setLocations={setLocations} />
+            <Suspense fallback={<CardsWrapperSkeleton />}>
+                <CardsWrapper locations={locations} setLocations={setLocations} />
+            </Suspense>
         </div>
     )
 }

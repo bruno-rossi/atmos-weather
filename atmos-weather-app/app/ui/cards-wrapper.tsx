@@ -3,6 +3,7 @@
 import LocationCard from "./location-cards";
 import { Location } from "../lib/definitions";
 import { deleteLocation } from "../lib/actions";
+import { CardsWrapperSkeleton } from "./skeletons";
 
 export default function CardsWrapper({ locations, setLocations }: { locations: Location[], setLocations: React.Dispatch<React.SetStateAction<Location[]>> }) {
 
