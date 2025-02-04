@@ -99,3 +99,11 @@ export async function deleteLocation(locationId: string): Promise<ResponseMessag
     }
   }
 }
+
+export function getCookie(name: string): string | null {
+  const cookie = document.cookie
+    .split('; ') // Split the cookies string into individual key-value pairs
+    .find(row => row.startsWith(`${name}=`)); // Find the cookie with the specified name
+
+  return cookie ? decodeURIComponent(cookie.split('=')[1]) : null; // Decode and return the value, or null if not found
+}
