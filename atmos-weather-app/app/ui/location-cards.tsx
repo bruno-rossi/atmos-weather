@@ -5,6 +5,7 @@ import { fetchWeather } from "../lib/data";
 import React, {useState, useEffect, Suspense } from "react";
 import { WeatherData } from "../lib/definitions";
 import { formatIntlTime } from "../lib/data";
+import { ForecastTableSkeleton, LocationCardSkeleton, WeatherConditionSkeleton } from "./skeletons";
 
 const WeatherCondition = React.lazy(() => import("./weather-condition"));
 const ForecastTable = React.lazy(() => import("./forecast-table"));
@@ -37,7 +38,7 @@ export default function LocationCard({ location, handleDelete }: LocationCardPro
         getWeather(); // Fetch the weather for this location
     }, [location]);
 
-    if (isLoading) return <p>Loading weather...</p>;
+    if (isLoading) return <LocationCardSkeleton />;
     if (error) return <p>{error}</p>;
     if (!weatherData || !weatherData.current) return <p>No weather data available.</p>;
     
@@ -51,7 +52,7 @@ export default function LocationCard({ location, handleDelete }: LocationCardPro
             </div>
             <div className="grid grid-cols-6 gap-0 border w-full items-center">
                 <div className="col-span-1 border text-center">
-                <Suspense fallback={<p>Loading weather condition...</p>}>
+                <Suspense fallback={<WeatherConditionSkeleton />}>
                     <WeatherCondition weatherData={weatherData.current} />
                 </Suspense>
                 </div>
@@ -65,7 +66,7 @@ export default function LocationCard({ location, handleDelete }: LocationCardPro
                     {weatherData.current.temperature_2m} {weatherData.current_units.temperature_2m}
                 </h3>
             </div>
-            <Suspense fallback={<p>Loading forecast...</p>}>
+            <Suspense fallback={<ForecastTableSkeleton />}>
                 <ForecastTable 
                     currentTime={weatherData.current.time ?? null} 
                     weatherDataHourly={weatherData.hourly}
