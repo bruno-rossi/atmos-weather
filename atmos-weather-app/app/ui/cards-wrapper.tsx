@@ -3,6 +3,7 @@
 import LocationCard from "./location-cards";
 import { Location } from "../lib/definitions";
 import { deleteLocation } from "../lib/actions";
+import EmptyState from "./empty-state";
 
 export default function CardsWrapper({ locations, setLocations }: { locations: Location[], setLocations: React.Dispatch<React.SetStateAction<Location[]>> }) {
 
@@ -22,6 +23,10 @@ export default function CardsWrapper({ locations, setLocations }: { locations: L
         } else if (response.status === 400) {
             console.log("An error has occurred.")
         }
+    }
+
+    if (locations.length === 0) {
+        return <EmptyState />;
     }
 
     return (
