@@ -1,0 +1,70 @@
+{
+    "logo": {
+        "app_name": "Atmos Weather",
+        "app_logo_alt_text": "Atmos Weather logo"
+    },
+    "icons": {
+        "settings_icon_alt_text": "Settings icon",
+        "weather_icon_alt_text": "Weather condition icon: {label}"
+    },
+    "form": {
+        "location_name_input_label": "Enter location name:",
+        "location_name_input_placeholder": "Enter location name",
+        "latitude_input_label": "Enter latitude here:",
+        "latitude_input_placeholder": "Latitude",
+        "longitude_input_label": "Enter longitude here:",
+        "longitude_input_placeholder": "Longitude",
+        "button_label": "Get weather",
+        "latitude_required_error": "Latitude is required.",
+        "latitude_invalid_type_error": "Latitude must be a number.",
+        "latitude_too_low_error": "Please enter a latitude greater than -90.",
+        "latitude_too_high_error": "Please enter a latitude lower than 90.",
+        "longitude_required_error": "Longitude is required.",
+        "longitude_invalid_type_error": "Longitude must be a number.",
+        "longitude_too_low_error": "Please enter a longitude greater than -180.",
+        "longitude_too_high_error": "Please enter a longitude lower than 180.",
+        "validation_failed_error": "Validation failed. Please correct the errors and try again. Failed to create location.",
+        "location_created_success": "Location successfully created.",
+        "database_error": "Database error: Failed to create location.",
+        "location_deleted_success": "Location has been successfully deleted from the database.",
+        "location_deleted_failed_error": "Database error: Failed to delete location."
+    },
+    "card": {
+        "error_fetching": "Error fetching weather data.",
+        "no_data_available": "No weather data available.",
+        "delete_button_label": "Delete",
+        "location_name_fallback": "{latitude}, {longitude}"
+    },
+    "settings": {
+        "temperature": "Temperature",
+        "celsius": "°C",
+        "fahrenheit": "°F"
+    },
+    "table": {
+        "loading_data": "Loading time data..."
+    },
+    "empty": {
+        "header": "No locations to display.",
+        "paragraph": "There are no locations to display at the moment. Add a location above to get started."
+    },
+    "temperature": {
+        "display_text": "{amount} {unit}"
+    },
+    "data": {
+        "fetch_weather_error": "Error: {status} - {statusText}."
+    },
+    "weather_conditions": {
+        "light_snow": "Light snow",
+        "moderate_snow": "Moderate snow",
+        "heavy_snow": "Heavy snow",
+        "light_rain": "Light rain",
+        "moderate_rain": "Moderate rain",
+        "heavy_rain": "Heavy rain",
+        "cloudy_day": "Cloudy",
+        "cloudy_night": "Cloudy",
+        "overcast": "Overcast",
+        "clear_day": "Clear skies",
+        "clear_night": "Clear skies",
+        "undefined": "Undefined"
+    }
+  }
