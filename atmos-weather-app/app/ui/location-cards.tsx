@@ -9,8 +9,9 @@ import { ForecastTableSkeleton, LocationCardSkeleton, WeatherConditionSkeleton }
 
 const WeatherCondition = React.lazy(() => import("./weather-condition"));
 const ForecastTable = React.lazy(() => import("./forecast-table"));
+const TemperatureSpan = React.lazy(() => import("./temperature-span"));
 
-export default function LocationCard({ location, handleDelete }: LocationCardProps) {
+export default function LocationCard({ location, temperatureUnit, handleDelete }: LocationCardProps) {
 
     const [ weatherData, setWeatherData ] = useState<WeatherData | null>(null);
     const [ isLoading, setIsLoading ] = useState(true);
@@ -18,9 +19,10 @@ export default function LocationCard({ location, handleDelete }: LocationCardPro
     const [ formattedLocalTime, setFormattedLocalTime ] = useState<string>("")
 
     useEffect(() => {
+        console.log("Fetching weather for unit:", temperatureUnit);
         const getWeather = async () => {
             try {
-                const data = await fetchWeather(location);
+                const data = await fetchWeather(location, temperatureUnit);
                 setWeatherData(data);
                 console.log("Weather data: ", data)
                 
@@ -36,7 +38,11 @@ export default function LocationCard({ location, handleDelete }: LocationCardPro
         };
 
         getWeather(); // Fetch the weather for this location
-    }, [location]);
+    }, [temperatureUnit, location?.location_id]);
+
+    useEffect(() => {
+        console.log("useEffect triggered with temperatureUnit:", temperatureUnit, "and location:", location);
+    }, [temperatureUnit, location?.location_id]);
 
     if (isLoading) return <LocationCardSkeleton />;
     if (error) return <p>{error}</p>;
@@ -63,7 +69,10 @@ export default function LocationCard({ location, handleDelete }: LocationCardPro
                         { formattedLocalTime }
                 </h3>
                 <h3 className="col-span-1 text-3xl text-center border">
-                    {weatherData.current.temperature_2m} {weatherData.current_units.temperature_2m}
+                    <TemperatureSpan 
+                        temperatureUnit={weatherData.current_units.temperature_2m as "celsius" | "fahrenheit"} 
+                        temperatureAmount={weatherData.current.temperature_2m} 
+                    />
                 </h3>
             </div>
             <Suspense fallback={<ForecastTableSkeleton />}>

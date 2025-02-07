@@ -2,7 +2,6 @@
 import { fetchLocations } from "./lib/data";
 import { Location } from "./lib/definitions";
 import Client from "./ui/client";
-import { cookies } from 'next/headers';
 
 export default async function Home() {
   
