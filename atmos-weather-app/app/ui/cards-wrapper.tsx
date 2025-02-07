@@ -1,11 +1,20 @@
 'use client';
-
+import { useState } from 'react';
 import LocationCard from "./location-cards";
 import { Location } from "../lib/definitions";
 import { deleteLocation } from "../lib/actions";
 import EmptyState from "./empty-state";
+import SettingsDrawer from "./settings-drawer";
 
 export default function CardsWrapper({ locations, setLocations }: { locations: Location[], setLocations: React.Dispatch<React.SetStateAction<Location[]>> }) {
+    
+    const [temperatureUnit, setTemperatureUnit] = useState<'celsius' | 'fahrenheit'>(() => {
+        if (typeof window !== "undefined") {
+            const savedUnit = localStorage.getItem('temperatureUnit');
+            return (savedUnit as 'celsius' | 'fahrenheit') || 'celsius';
+        }
+        return 'celsius'; // Default value for SSR
+    });
 
     async function handleDelete(location_id: string) {
         console.log('Delete function triggered');
@@ -31,9 +40,12 @@ export default function CardsWrapper({ locations, setLocations }: { locations: L
 
     return (
         <div className="flex flex-col gap-4 bg-freshAir w-[80%] h-[100%] py-8 px-8 rounded-xl mx-auto">
-            {locations.map((location) => (
-                <LocationCard key={location.location_id} location={location} handleDelete={handleDelete} />
-            ))}
+            <SettingsDrawer temperatureUnit={temperatureUnit} setTemperatureUnit={setTemperatureUnit} />
+            {locations.map((location) => {
+                return (
+                    <LocationCard key={location.location_id} temperatureUnit={temperatureUnit} location={location} handleDelete={handleDelete} />
+                );
+            })}
         </div>
     )
 }

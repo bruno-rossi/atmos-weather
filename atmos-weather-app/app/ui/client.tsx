@@ -10,6 +10,13 @@ import { CardsWrapperSkeleton } from "./skeletons";
 export default function Client({initialLocations}: { initialLocations: Location[]}) {
 
     const [locations, setLocations] = useState<Location[]>(initialLocations);
+    const [temperatureUnit, setTemperatureUnit] = useState<'celsius' | 'fahrenheit'>(() => {
+        if (typeof window !== "undefined") {
+            const savedUnit = localStorage.getItem('temperatureUnit');
+            return (savedUnit as 'celsius' | 'fahrenheit') || 'celsius';
+        }
+        return 'celsius'; // Default value for SSR
+    });
 
     useEffect(() => {
 

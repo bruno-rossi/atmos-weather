@@ -1,4 +1,4 @@
-import { Logo, SettingsIcon } from "./icons/icons"
+import { Logo } from "./icons/icons"
 
 export default function NavBar() {
 
@@ -7,9 +7,9 @@ export default function NavBar() {
             <div className="flex-1 flex justify-start mx-8 sm:mx-16">
                 <Logo />
             </div>
-            <button className="mx-8 mt-4 sm:mx-16">
+            {/* <button className="mx-8 mt-4 sm:mx-16">
                 <SettingsIcon />
-            </button>
+            </button> */}
         </nav>
     )
 }

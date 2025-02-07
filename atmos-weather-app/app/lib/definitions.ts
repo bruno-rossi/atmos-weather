@@ -8,6 +8,7 @@ export type Location = {
 
 export type LocationCardProps = {
     location: Location,
+    temperatureUnit: 'celsius' | 'fahrenheit',
     handleDelete: Function
 }
 

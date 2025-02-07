@@ -2,7 +2,6 @@ import { db } from "@vercel/postgres";
 import { Location } from "./definitions";
 import { WeatherConditionProps, WeatherDataHourly, WeatherDataCurrent  } from "./definitions";
 
-
 export async function fetchLocations(): Promise<Location[]> {
 
     const client = await db.connect();
@@ -30,10 +29,12 @@ export async function fetchLocations(): Promise<Location[]> {
     }
 }
 
-export async function fetchWeather(location: Location) {
+export async function fetchWeather(location: Location, temperatureUnit: 'celsius' | 'fahrenheit') {
+
+    console.log("Fetch weather triggered");
 
     try {
-        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,is_day,precipitation,rain,snowfall,cloud_cover&hourly=temperature_2m,rain,snowfall,cloud_cover,is_day&timezone=auto&forecast_days=2`)
+        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,is_day,precipitation,rain,snowfall,cloud_cover&hourly=temperature_2m,rain,snowfall,cloud_cover,is_day&timezone=auto&temperature_unit=${temperatureUnit}&forecast_days=2`)
 
         if (!response.ok) {
             throw new Error(`Error: ${response.status} - ${response.statusText}`);
