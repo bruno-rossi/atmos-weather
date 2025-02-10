@@ -3,9 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import NavBar from "./ui/nav-bar";
 import {NextIntlClientProvider} from 'next-intl';
 import {getLocale, getMessages} from 'next-intl/server';
-
 import "./globals.css";
-// import LocaleSwitcher from "./ui/locale-switcher";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,6 +27,7 @@ export default async function RootLayout({
 }>) {
 
   const locale = await getLocale();
+  console.log(locale);
   const messages = await getMessages();
 
   return (
@@ -47,9 +46,6 @@ export default async function RootLayout({
         <div className="flex flex-col row-start-2 items-center sm:items-start">
             {children}
         </div>
-        {/* <footer>
-          <LocaleSwitcher />
-        </footer> */}
       </main>
       </NextIntlClientProvider>
       </body>

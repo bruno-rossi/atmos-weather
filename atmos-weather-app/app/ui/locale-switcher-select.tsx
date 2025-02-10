@@ -1,6 +1,7 @@
 // 'use client';
 
 // import {useTransition, ChangeEvent} from 'react';
+// import { setUserLocale } from '../services/locale';
 
 // type Props = {
 //     defaultValue: string;
@@ -18,14 +19,15 @@
 
 //     const [isPending, startTransition] = useTransition();
 
-//     function onChange(event: ChangeEvent<HTMLSelectElement>) {
-//         const locale = event.target.value as Locale;
+//     function handleChange(event: ChangeEvent<HTMLSelectElement>) {
+//         const newLocale = event.target.value as Locale;
 //         startTransition(() => {
+//             setUserLocale(newLocale);
 //         });
 //       }
 
 //     return (
-//         <select defaultValue={defaultValue} onChange={onChange}>
+//         <select defaultValue={defaultValue} onChange={handleChange}>
 //             {items.map((item) => {
 //                 return (
 //                     <option key={item.value} value={item.value} >{label}</option>
