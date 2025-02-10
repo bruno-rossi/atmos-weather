@@ -36,14 +36,14 @@ export default async function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body
-        className={`bg-white ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`bg-white ${geistSans.variable} ${geistMono.variable} antialiased w-full`}
       >
       <NextIntlClientProvider messages={messages}>
       <main className="font-[family-name:var(--font-geist-sans)] flex min-h-screen flex-col">
         <header>
           <NavBar />
         </header>
-        <div className="flex flex-col row-start-2 items-center sm:items-start">
+        <div className="flex flex-col row-start-2 items-center">
             {children}
         </div>
       </main>

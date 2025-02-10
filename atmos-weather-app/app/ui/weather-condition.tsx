@@ -8,7 +8,7 @@ export default function WeatherCondition({ weatherData }: WeatherConditionProps)
     const condition = getWeatherCondition({ weatherData });
 
     return (
-        <div className="border p-4 mx-auto flex flex-col items-center justify-center">
+        <div className="p-4 mx-auto flex flex-col items-center justify-center">
             <WeatherIcon condition={condition} />
             <p className="mt-2 text-center">{condition.label}</p>
         </div>

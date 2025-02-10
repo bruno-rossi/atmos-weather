@@ -6,13 +6,15 @@ import { WeatherDataCurrent, WeatherDataHourly } from "../lib/definitions";
 import { getForecastNextSixHours } from "../lib/data";
 import { formatIntlTime } from "../lib/data";
 import { useTranslations } from "next-intl";
+import TemperatureSpan from "./temperature-span";
 
 interface ForecastTableProps {
     currentTime: string,
     weatherDataHourly: WeatherDataHourly,
+    temperatureUnit: "celsius" | "fahrenheit",
 }
 
-export default function ForecastTable({currentTime, weatherDataHourly}: ForecastTableProps) {
+export default function ForecastTable({currentTime, weatherDataHourly, temperatureUnit}: ForecastTableProps) {
 
 
     const t = useTranslations('table');
@@ -41,18 +43,22 @@ export default function ForecastTable({currentTime, weatherDataHourly}: Forecast
     // }}
 
     return (
-        <table className="mx-auto w-full">
+        <table className="mx-auto w-full border-t">
             <thead>
                 <tr className="grid grid-cols-6 text-center">
                 {
-                    hourlyForecast.map(weather => <td className="border" key={weather.time}>{formatIntlTime(weather.time)}</td>)
+                    hourlyForecast.map(weather => <td className="" key={weather.time}>{formatIntlTime(weather.time)}</td>)
                 }
                 </tr>
             </thead>
             <tbody>
                 <tr className="grid grid-cols-6 text-center">
                     {
-                        hourlyForecast.map(weather => <td className="border" key={weather.time}>{weather.temperature_2m}</td>)
+                        hourlyForecast.map(weather => <td className="" key={weather.time}>
+                            <TemperatureSpan temperatureAmount={weather.temperature_2m} 
+                                temperatureUnit={temperatureUnit}
+                                />
+                        </td>)
                     }
                 </tr>
                 <tr className="grid grid-cols-6">

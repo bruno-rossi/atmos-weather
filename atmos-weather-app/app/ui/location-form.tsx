@@ -34,7 +34,7 @@ export default function LocationForm({ setLocations }: { setLocations: React.Dis
             aria-describedby="location-form-error">
 
             {/* Form fields */}
-            <div className="flex sm:flex-row flex-col items-center mx-auto gap-4 p-4 border">
+            <div className="flex md:flex-row flex-col items-center mx-auto gap-4 p-4 w-full ">
             
                 {/* <input type="text" placeholder="Search for a location..." /> */}
 
