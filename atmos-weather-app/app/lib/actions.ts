@@ -4,6 +4,9 @@ import { z } from 'zod';
 import { sql } from '@vercel/postgres';
 import { Location } from './definitions';
 import { FormState } from './definitions';
+import { useTranslations } from 'next-intl';
+
+const t = useTranslations('form');
 
 const FormSchema = z.object({
     userId: z.string().uuid(),
@@ -11,15 +14,18 @@ const FormSchema = z.object({
     locationName: z.string(),
     latitude: z.coerce
         .number({
-            required_error: "Latitude is required.",
-            invalid_type_error: "Latitude must be a number.",
+            required_error: t("latitude_required_error"),
+            invalid_type_error: t("latitude_invalid_type_error"),
         })
-        .gte(-90, { message: "Please enter a latitude greater than -90." })
-        .lte(90, { message: "Please enter a latitude lower than 90." }),
+        .gte(-90, { message: t("latitude_too_low_error") })
+        .lte(90, { message: t("latitude_too_high_error") }),
     longitude: z.coerce
-        .number()
-        .gte(-180, { message: "Please enter a longitude greater than -180."})
-        .lte(180, { message: "Please enter a longitude lower than 180."}),
+        .number({
+          required_error: t("longitude_required_error"),
+          invalid_type_error: t("longitude_invalid_type_error"),
+      })
+        .gte(-180, { message: t("longitude_too_low_error") })
+        .lte(180, { message: t("longitude_too_high_error") }),
 })
 
 const CreateLocation = FormSchema.omit({ locationId: true });
@@ -35,9 +41,12 @@ export async function createLocation(prevState: FormState, formData: FormData): 
 
     // If form validation fails, return errors early. Otherwise, continue.
     if (!validatedFields.success) {
+
+      const validationErrorMessage = t('validation_failed_error');
+
         return {
           errors: validatedFields.error.flatten().fieldErrors,
-          message: 'Validation failed. Please correct the errors and try again. Failed to create location.',
+          message: validationErrorMessage,
         };
     }
 
@@ -61,15 +70,18 @@ export async function createLocation(prevState: FormState, formData: FormData): 
           longitude: newLocation.longitude,
         };
 
+        const successMessage = t('location_created_success')
+
         return {
             newLocation: location,
-            message: "Location successfully created.",
+            message: successMessage,
         };
     } catch (error) {
         // If a database error occurs, return a more specific error.
         console.error("Database error:", error);
+        const errorMessage = t('database_error');
         return {
-          message: 'Database error: Failed to create location.',
+          message: errorMessage,
         };
     }
     
@@ -85,17 +97,19 @@ export async function deleteLocation(locationId: string): Promise<ResponseMessag
   try {
 
     const response = await sql`DELETE FROM locations WHERE location_id = ${locationId}`;
+    const successMessage = t('location_deleted_success');
 
     return { 
       status: 204,
-      message: "Location has been successfully deleted from the database."
+      message: successMessage,
     };
 
   } catch (error) {
     console.log("Database error", error);
+    const errorMessage = t('location_deleted_failed_error');
     return {
       status: 400,
-      message: "Database error: Failed to delete location."
+      message: errorMessage,
     }
   }
 }

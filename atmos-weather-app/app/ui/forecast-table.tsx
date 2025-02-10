@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { WeatherDataCurrent, WeatherDataHourly } from "../lib/definitions";
 import { getForecastNextSixHours } from "../lib/data";
 import { formatIntlTime } from "../lib/data";
+import { useTranslations } from "next-intl";
 
 interface ForecastTableProps {
     currentTime: string,
@@ -13,6 +14,8 @@ interface ForecastTableProps {
 
 export default function ForecastTable({currentTime, weatherDataHourly}: ForecastTableProps) {
 
+
+    const t = useTranslations('table');
     const currentHour = (new Date(currentTime)).getHours()
     const [hourlyForecast, setHourlyForecast] = useState<WeatherDataCurrent[]>([]);
 
@@ -22,7 +25,7 @@ export default function ForecastTable({currentTime, weatherDataHourly}: Forecast
         }
     }, [currentHour, weatherDataHourly]);
     
-    if (currentHour === null) return <p>Loading time data...</p>;
+    if (currentHour === null) return <p>{t('loading_data')}</p>;
 
 
     // const tempData = { weatherData: {
