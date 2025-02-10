@@ -39,7 +39,7 @@ export default function CardsWrapper({ locations, setLocations }: { locations: L
     }
 
     return (
-        <div className="flex flex-col gap-4 bg-freshAir w-[80%] h-[100%] py-8 px-8 rounded-xl mx-auto">
+        <div className="flex flex-col gap-4 bg-freshAir w-full md:w-[80%] h-[100%] py-8 px-8 rounded-xl md:mx-auto">
             <SettingsDrawer temperatureUnit={temperatureUnit} setTemperatureUnit={setTemperatureUnit} />
             {locations.map((location) => {
                 return (

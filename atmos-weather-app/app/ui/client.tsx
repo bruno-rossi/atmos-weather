@@ -29,7 +29,7 @@ export default function Client({initialLocations}: { initialLocations: Location[
     }, []);
 
     return (
-        <div className="flex flex-col items-center sm:items-start w-full">
+        <div className="flex flex-col items-center w-full md:mx-auto">
             <LocationFormWrapper setLocations={setLocations} />
             <Suspense fallback={<CardsWrapperSkeleton />}>
                 <CardsWrapper locations={locations} setLocations={setLocations} />

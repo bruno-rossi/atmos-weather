@@ -6,10 +6,12 @@ export default function TemperatureSpan({ temperatureUnit, temperatureAmount}: {
 
     const t = useTranslations('temperature');
 
-    const displayTemperature = t('display_text', {unit: temperatureUnit, amount: temperatureAmount} )
+    let temperatureUnitString = temperatureUnit === "celsius" ? t('celsius') : t('fahrenheit');
+
+    const displayTemperature = t('display_text', {unit: temperatureUnitString, amount: temperatureAmount} )
     
     return (
-        <span className="col-span-1 text-3xl text-center border">
+        <span className="col-span-1 text-3xl text-center">
             {displayTemperature}
         </span>
     )

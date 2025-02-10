@@ -53,26 +53,26 @@ export default function LocationCard({ location, temperatureUnit, handleDelete }
     const locationNameFallback = t('location_name_fallback', {latitude: location.latitude, longitude: location.longitude})
     
     return (
-        <div className="group flex flex-col bg-white w-full mx-auto py-4 px-4 border rounded-xl">
+        <div className="group flex flex-col bg-white w-full mx-auto py-4 px-4 rounded-xl">
             <div className="flex flex-row justify-end ">
                 <button onClick={() => handleDelete(location.location_id)}
                     className="block py-2 invisible group-hover:visible group-hover:pointer-events-auto pointer-events-none"
                     ><span className="bg-capri text-white font-bold px-4 py-2 rounded-xl">{t('delete_button_label')}</span>
                 </button>
             </div>
-            <div className="grid grid-cols-6 gap-0 border w-full items-center">
-                <div className="col-span-1 border text-center">
+            <div className="grid grid-cols-6 gap-0 w-full items-center">
+                <div className="col-span-1 text-center">
                 <Suspense fallback={<WeatherConditionSkeleton />}>
                     <WeatherCondition weatherData={weatherData.current} />
                 </Suspense>
                 </div>
-                <h2 className="col-span-2 text-4xl text-center truncate border">
+                <h2 className="col-span-2 text-4xl text-center truncate">
                     { location.location_name && location.location_name !== "" ? location.location_name : locationNameFallback }
                 </h2>
-                <h3 className="col-span-2 text-3xl text-center border">
+                <h3 className="col-span-2 text-3xl text-center">
                         { formattedLocalTime }
                 </h3>
-                <h3 className="col-span-1 text-3xl text-center border">
+                <h3 className="col-span-1 text-3xl text-center">
                     <TemperatureSpan 
                         temperatureUnit={weatherData.current_units.temperature_2m as "celsius" | "fahrenheit"} 
                         temperatureAmount={weatherData.current.temperature_2m} 
@@ -83,6 +83,7 @@ export default function LocationCard({ location, temperatureUnit, handleDelete }
                 <ForecastTable 
                     currentTime={weatherData.current.time ?? null} 
                     weatherDataHourly={weatherData.hourly}
+                    temperatureUnit={temperatureUnit}
                 />
             </Suspense>
         </div>

@@ -4,9 +4,9 @@ import { z } from 'zod';
 import { sql } from '@vercel/postgres';
 import { Location } from './definitions';
 import { FormState } from './definitions';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
-const t = useTranslations('form');
+const t = await getTranslations('form');
 
 const FormSchema = z.object({
     userId: z.string().uuid(),

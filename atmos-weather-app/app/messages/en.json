@@ -48,7 +48,9 @@
         "paragraph": "There are no locations to display at the moment. Add a location above to get started."
     },
     "temperature": {
-        "display_text": "{amount} {unit}"
+        "display_text": "{amount} {unit}",
+        "celsius": "°C",
+        "fahrenheit": "°F"
     },
     "data": {
         "fetch_weather_error": "Error: {status} - {statusText}."
